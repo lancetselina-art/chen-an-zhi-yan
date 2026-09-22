@@ -61,6 +61,16 @@ def _local_kb_cached():
 
 
 @st.cache_data(show_spinner=False)
+def _default_kb():
+    """默认云端优先：先从 GitHub raw 拉取知识库，任一文件失败则降级本地打包副本。"""
+    with st.spinner("正在从 GitHub 云端加载规范知识库…"):
+        gh_kb, _failed = KB.fetch_github_kb(C.GITHUB_KB_HINT, timeout=8)
+    if gh_kb:
+        return gh_kb, f"GitHub 云端：{C.GITHUB_KB_HINT}"
+    return _local_kb_cached(), "本地 knowledge/ 目录（云端不可达，已自动降级）"
+
+
+@st.cache_data(show_spinner=False)
 def _digest_cached(kb_tuple):
     return KB.build_rule_digest(dict(kb_tuple))
 
@@ -71,8 +81,10 @@ def sev_badge(level: str) -> str:
 
 
 def init_state():
-    st.session_state.setdefault("kb", _local_kb_cached())
-    st.session_state.setdefault("kb_source", "本地 knowledge/ 目录")
+    # 知识库默认云端（GitHub）加载，失败自动降级本地
+    cloud_kb, cloud_source = _default_kb()
+    st.session_state.setdefault("kb", cloud_kb)
+    st.session_state.setdefault("kb_source", cloud_source)
     st.session_state.setdefault("history", [])
     st.session_state.setdefault("vision_result", None)
     st.session_state.setdefault("sensor_result", None)
@@ -168,19 +180,23 @@ with st.sidebar:
     st.divider()
     st.markdown("#### 📚 知识库")
     if admin_mode:
-        kb_src = st.radio("知识来源", ["本地目录", "GitHub 实时同步"], label_visibility="collapsed")
-        if kb_src == "GitHub 实时同步":
+        kb_src = st.radio("知识来源", ["GitHub 云端（默认）", "本地目录"], label_visibility="collapsed")
+        if kb_src == "GitHub 云端（默认）":
             gh_base = st.text_input("GitHub raw 目录地址", value=C.GITHUB_KB_HINT)
-            if st.button("🔄 从 GitHub 同步", **UW):
+            if st.button("🔄 立即从 GitHub 同步", **UW):
                 with st.spinner("同步规范知识库…"):
                     gh_kb, failed = KB.fetch_github_kb(gh_base, timeout=8)
                 if gh_kb:
                     st.session_state["kb"] = gh_kb
-                    st.session_state["kb_source"] = f"GitHub：{gh_base}"
+                    st.session_state["kb_source"] = f"GitHub 云端：{gh_base}"
                     st.success(f"已同步 {len(gh_kb)} 份规范文件")
                     st.rerun()
                 else:
-                    st.error(f"同步失败（{', '.join(failed[:3])}…），已保留本地知识库")
+                    st.error(f"同步失败（{', '.join(failed[:3])}…），已保留当前知识库")
+        else:
+            # 管理员手动切回本地打包副本
+            st.session_state["kb"] = _local_kb_cached()
+            st.session_state["kb_source"] = "本地 knowledge/ 目录（管理员手动切换）"
     st.caption(f"当前来源：{st.session_state['kb_source']}")
     st.caption(f"📚 {len(KB_DICT)} 份文件 · 精要 {len(RULE_DIGEST)} 字符（已压缩注入）")
 
@@ -516,7 +532,7 @@ with tab_kb:
                          "、".join(s[0] for s in stds)])
     st.dataframe(pd.DataFrame(map_rows, columns=["分类码", "隐患", "默认等级", "知识库文件", "引用标准"]),
                  hide_index=True, **UW)
-    st.caption("GitHub 联动：在侧边栏填入 raw 目录地址即可实时拉取团队维护的最新规范；同步失败自动降级本地库。")
+    st.caption("知识库默认从 GitHub 云端加载（失败自动降级本地打包副本）；管理员在网址后加 ?admin=1 可手动同步或切换本地。")
 
 # ============================ Tab 5 台账 ============================
 with tab_history:
