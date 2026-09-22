@@ -11,6 +11,9 @@ venv/
 # 日志与缓存
 *.log
 .kb_cache/
+.npm-cache/
+.runtime-frontend/
+.runtime-python/
 
 # 系统
 .DS_Store

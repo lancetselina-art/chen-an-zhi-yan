@@ -1,83 +1,86 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="880" viewBox="0 0 1200 880" font-family="Microsoft YaHei, PingFang SC, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" font-family="Microsoft YaHei, PingFang SC, sans-serif">
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L8,3 L0,6 Z" fill="#475569"/>
     </marker>
-    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L8,3 L0,6 Z" fill="#e94560"/>
-    </marker>
     <style>
-      .lane{fill:#f8fafc;stroke:#cbd5e1;stroke-width:1.5;rx:14;}
-      .laneTitle{font-size:19px;font-weight:700;fill:#0f172a;}
-      .box{fill:#ffffff;stroke:#94a3b8;stroke-width:1.6;rx:10;}
-      .boxRed{fill:#fff1f2;stroke:#e94560;stroke-width:2;rx:10;}
-      .boxBlue{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:10;}
-      .boxDark{fill:#1a1a2e;stroke:#1a1a2e;rx:10;}
-      .bt{font-size:16px;font-weight:700;fill:#0f172a;text-anchor:middle;}
-      .bs{font-size:12.5px;fill:#475569;text-anchor:middle;}
-      .bw{font-size:14px;font-weight:700;fill:#ffffff;text-anchor:middle;}
-      .bws{font-size:11.5px;fill:#cbd5e1;text-anchor:middle;}
-      .flow{stroke:#475569;stroke-width:2;fill:none;marker-end:url(#arrow);}
-      .dash{stroke:#e94560;stroke-width:1.8;stroke-dasharray:6 5;fill:none;marker-end:url(#arrowRed);}
+      .lane{fill:#f8fafc;stroke:#cbd5e1;stroke-width:1.5;rx:12}
+      .title{font-size:28px;font-weight:700;fill:#111827;text-anchor:middle}
+      .subtitle{font-size:14px;fill:#64748b;text-anchor:middle}
+      .laneTitle{font-size:18px;font-weight:700;fill:#0f172a}
+      .box{fill:#fff;stroke:#94a3b8;stroke-width:1.5;rx:8}
+      .api{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:8}
+      .stream{fill:#fff7ed;stroke:#ea580c;stroke-width:2;rx:8}
+      .core{fill:#f0fdf4;stroke:#16a34a;stroke-width:2;rx:8}
+      .model{fill:#1e293b;stroke:#1e293b;stroke-width:1.5;rx:8}
+      .bt{font-size:16px;font-weight:700;fill:#0f172a;text-anchor:middle}
+      .bs{font-size:12px;fill:#475569;text-anchor:middle}
+      .white{font-size:14px;font-weight:700;fill:#fff;text-anchor:middle}
+      .smallwhite{font-size:11px;fill:#cbd5e1;text-anchor:middle}
+      .flow{stroke:#475569;stroke-width:2;fill:none;marker-end:url(#arrow)}
+      .dash{stroke:#64748b;stroke-width:1.8;stroke-dasharray:6 5;fill:none;marker-end:url(#arrow)}
     </style>
   </defs>
 
-  <text x="600" y="42" font-size="28" font-weight="700" fill="#1a1a2e" text-anchor="middle">尘安智眼 v4 · 工地环境与安全智能监测系统 — 技术架构图</text>
-  <text x="600" y="68" font-size="14" fill="#64748b" text-anchor="middle">多模态视觉识别 × 传感器时序研判 × 规范知识库 RAG　|　确定性归代码 · 研判归大模型 · 依据归知识库</text>
+  <text class="title" x="600" y="38">尘安智眼 v4 · 双入口技术架构</text>
+  <text class="subtitle" x="600" y="64">Streamlit 保留为最终展示，FastAPI + Vue 提供可独立运行的前后端分离入口</text>
 
-  <!-- 采集层 -->
-  <rect class="lane" x="40" y="88" width="1120" height="108"/>
-  <text class="laneTitle" x="62" y="114">① 采集层</text>
-  <rect class="box" x="110" y="124" width="300" height="58"/><text class="bt" x="260" y="148">现场照片</text><text class="bs" x="260" y="170">球机/无人机/巡检手机 · JPG/PNG/WEBP</text>
-  <rect class="box" x="450" y="124" width="300" height="58"/><text class="bt" x="600" y="148">探头时序数据 CSV</text><text class="bs" x="600" y="170">TSP · 噪声 · 气温 · 湿度 · 背景PM10</text>
-  <rect class="box" x="790" y="124" width="300" height="58"/><text class="bt" x="940" y="148">Open-Meteo 实时天气</text><text class="bs" x="940" y="170">免 Key 自动填充气温/湿度</text>
+  <rect class="lane" x="40" y="84" width="1120" height="112"/>
+  <text class="laneTitle" x="62" y="112">① 使用入口</text>
+  <rect class="stream" x="100" y="130" width="310" height="48"/>
+  <text class="bt" x="255" y="151">Streamlit · app.py</text>
+  <text class="bs" x="255" y="169">最终展示 / 离线演示 / 会话台账</text>
+  <rect class="box" x="475" y="130" width="250" height="48"/>
+  <text class="bt" x="600" y="151">现场照片 · CSV · 单点数据</text>
+  <text class="bs" x="600" y="169">统一输入，复用同一领域逻辑</text>
+  <rect class="api" x="790" y="130" width="310" height="48"/>
+  <text class="bt" x="945" y="151">Vue 3 + Vite</text>
+  <text class="bs" x="945" y="169">独立前端 / Apple 简约分隔</text>
 
-  <!-- 确定性计算层 -->
-  <rect class="lane" x="40" y="228" width="1120" height="108"/>
-  <text class="laneTitle" x="62" y="254">② 确定性计算层（core/analytics.py，数值结论不算错）</text>
-  <rect class="boxBlue" x="110" y="264" width="300" height="58"/><text class="bt" x="260" y="288">数据质控与标准化</text><text class="bs" x="260" y="310">中英文表头映射 · 掉点/卡死/突变检测</text>
-  <rect class="boxBlue" x="450" y="264" width="300" height="58"/><text class="bt" x="600" y="288">特征工程</text><text class="bs" x="600" y="310">限值判定 · 斜率趋势 · 连续超标 · WBGT · 呼吸带折算</text>
-  <rect class="boxBlue" x="790" y="264" width="300" height="58"/><text class="bt" x="940" y="288">本地规则引擎预警</text><text class="bs" x="940" y="310">DB61/GB12523/GBZ 阈值 · 不依赖模型先算先报</text>
+  <rect class="lane" x="40" y="224" width="1120" height="128"/>
+  <text class="laneTitle" x="62" y="252">② 适配与 API 层</text>
+  <rect class="stream" x="100" y="270" width="310" height="56"/>
+  <text class="bt" x="255" y="293">Streamlit 页面编排</text>
+  <text class="bs" x="255" y="312">直接调用 core，保留演示链路</text>
+  <rect class="api" x="445" y="270" width="310" height="56"/>
+  <text class="bt" x="600" y="293">FastAPI + Pydantic</text>
+  <text class="bs" x="600" y="312">校验 · 错误映射 · request_id · CORS</text>
+  <rect class="box" x="790" y="270" width="310" height="56"/>
+  <text class="bt" x="945" y="293">backend/services</text>
+  <text class="bs" x="945" y="312">视觉 · 传感器 · 知识库 · 报告适配</text>
 
-  <!-- 认知层 -->
-  <rect class="lane" x="40" y="372" width="1120" height="150"/>
-  <text class="laneTitle" x="62" y="398">③ 认知层（黄金 Prompt + 多模态大模型 + 知识库 RAG）</text>
-  <rect class="boxRed" x="90" y="412" width="300" height="46"/><text class="bt" x="240" y="440">视觉黄金 Prompt（Role-JSON 契约）</text>
-  <rect class="boxDark" x="90" y="466" width="300" height="44"/><text class="bw" x="240" y="485">GLM-5.3-Flash 多模态（视觉）</text><text class="bws" x="240" y="502">18 类隐患 · 危险值 · bbox · 事故链 · 整改</text>
-  <rect class="boxRed" x="430" y="412" width="300" height="46"/><text class="bt" x="580" y="440">数据黄金 Prompt（机理-工艺-趋势）</text>
-  <rect class="boxDark" x="430" y="466" width="300" height="44"/><text class="bw" x="580" y="485">GLM-5.3-Flash 多模态（数据）</text><text class="bws" x="580" y="502">耦合研判 · 工艺窗口 · 趋势外推 · 报告</text>
-  <rect class="box" x="780" y="412" width="320" height="98"/><text class="bt" x="940" y="438">📚 规范知识库（11 份）</text><text class="bs" x="940" y="462">启动压缩为规则精要 Digest 注入</text><text class="bs" x="940" y="482">命中隐患后按分类码召回全文</text><text class="bs" x="940" y="502">本地目录 / GitHub raw 双源热同步</text>
+  <rect class="lane" x="40" y="380" width="1120" height="170"/>
+  <text class="laneTitle" x="62" y="408">③ 共享领域层 · core/</text>
+  <rect class="core" x="75" y="430" width="205" height="82"/>
+  <text class="bt" x="177" y="454">analytics</text><text class="bs" x="177" y="475">质控 · 阈值 · 趋势</text><text class="bs" x="177" y="493">WBGT · 呼吸带折算</text>
+  <rect class="core" x="305" y="430" width="205" height="82"/>
+  <text class="bt" x="407" y="454">knowledge</text><text class="bs" x="407" y="475">本地/GitHub 规范</text><text class="bs" x="407" y="493">精要 · 检索 · 映射</text>
+  <rect class="core" x="535" y="430" width="205" height="82"/>
+  <text class="bt" x="637" y="454">llm + prompts</text><text class="bs" x="637" y="475">视觉/数据黄金 Prompt</text><text class="bs" x="637" y="493">演示模式与 JSON 契约</text>
+  <rect class="core" x="765" y="430" width="205" height="82"/>
+  <text class="bt" x="867" y="454">overlay + charts</text><text class="bs" x="867" y="475">PIL 检测框 · Plotly</text><text class="bs" x="867" y="493">风险图与可视化</text>
+  <rect class="core" x="995" y="430" width="130" height="82"/>
+  <text class="bt" x="1060" y="454">reporting</text><text class="bs" x="1060" y="475">Markdown</text><text class="bs" x="1060" y="493">JSON</text>
 
-  <!-- 应用层 -->
-  <rect class="lane" x="40" y="562" width="1120" height="112"/>
-  <text class="laneTitle" x="62" y="588">④ 应用层（Streamlit 五 Tab）</text>
-  <rect class="box" x="70" y="598" width="250" height="62"/><text class="bt" x="195" y="622">检测框叠加</text><text class="bs" x="195" y="644">PIL 红橙黄框 · 危险值标签</text>
-  <rect class="box" x="335" y="598" width="250" height="62"/><text class="bt" x="460" y="622">时序图与风险仪表盘</text><text class="bs" x="460" y="644">Plotly 阈值线/超标点 · 缺依赖降级</text>
-  <rect class="box" x="600" y="598" width="250" height="62"/><text class="bt" x="725" y="622">隐患工单 + 法条映射</text><text class="bs" x="725" y="644">责任人/时限/语音话术/规范全文</text>
-  <rect class="box" x="865" y="598" width="250" height="62"/><text class="bt" x="990" y="622">台账与双格式报告</text><text class="bs" x="990" y="644">Markdown + 结构化 JSON 下载</text>
+  <rect class="lane" x="40" y="578" width="1120" height="112"/>
+  <text class="laneTitle" x="62" y="606">④ 统一输出</text>
+  <rect class="box" x="100" y="625" width="260" height="42"/><text class="bt" x="230" y="651">视觉隐患工单</text>
+  <rect class="box" x="390" y="625" width="260" height="42"/><text class="bt" x="520" y="651">传感器风险与工艺窗口</text>
+  <rect class="box" x="680" y="625" width="260" height="42"/><text class="bt" x="810" y="651">规范条款与知识检索</text>
+  <rect class="box" x="970" y="625" width="130" height="42"/><text class="bt" x="1035" y="651">报告下载</text>
 
-  <!-- 闭环 -->
-  <rect x="40" y="718" width="1120" height="70" rx="14" fill="#1a1a2e"/>
-  <text x="600" y="748" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle">⑤ 分级处置闭环</text>
-  <text x="600" y="774" font-size="14" fill="#fecdd3" text-anchor="middle">🔴 红线：立即停工/整改（违法·即刻危险）　　🟠 黄线：加强防护/轮岗（职业健康）　　🟡 提醒：限期整改（管理规范）　→　复检归档 · 数据回流知识库</text>
+  <rect x="40" y="720" width="1120" height="58" rx="12" fill="#1e293b"/>
+  <text class="white" x="600" y="746">同一套 core 规则 · 两种入口 · 一条处置闭环</text>
+  <text class="smallwhite" x="600" y="765">无 API Key 时 Streamlit 与 FastAPI 均可使用演示数据；台账当前为会话内存，不引入数据库</text>
 
-  <!-- 箭头 -->
-  <path class="flow" d="M260,182 V262"/>
-  <path class="flow" d="M600,182 V262"/>
-  <path class="flow" d="M940,182 V262"/>
-  <path class="flow" d="M260,336 C260,380 240,390 240,410"/>
-  <path class="flow" d="M600,336 C600,380 580,390 580,410"/>
-  <path class="flow" d="M940,336 C940,372 940,392 940,410"/>
-  <path class="dash" d="M780,450 C700,430 500,430 392,432"/>
-  <path class="dash" d="M780,470 C720,470 640,452 732,436"/>
-  <path class="flow" d="M240,510 C240,550 195,566 195,596"/>
-  <path class="flow" d="M240,510 C420,560 640,566 725,596"/>
-  <path class="flow" d="M580,510 C540,552 470,566 460,596"/>
-  <path class="flow" d="M580,510 C720,560 900,566 990,596"/>
-  <path class="flow" d="M195,660 V700 Q195,716 215,716"/>
-  <path class="flow" d="M460,660 V716"/>
-  <path class="flow" d="M725,660 V716"/>
-  <path class="flow" d="M990,660 V700 Q990,716 975,716"/>
-  <text x="610" y="208" font-size="11.5" fill="#e94560">照片直送视觉链路</text>
-  <text x="700" y="396" font-size="11.5" fill="#e94560">规则精要注入（压缩 ~30% Token）</text>
+  <path class="flow" d="M255,178 V268"/>
+  <path class="flow" d="M945,178 V268"/>
+  <path class="dash" d="M600,178 V268"/>
+  <path class="flow" d="M255,326 C255,380 177,392 177,428"/>
+  <path class="flow" d="M600,326 V428"/>
+  <path class="flow" d="M945,326 C945,380 867,392 867,428"/>
+  <path class="flow" d="M177,512 C177,570 230,590 230,623"/>
+  <path class="flow" d="M407,512 C407,570 520,590 520,623"/>
+  <path class="flow" d="M637,512 C637,570 810,590 810,623"/>
+  <path class="flow" d="M867,512 C867,570 1035,590 1035,623"/>
 </svg>

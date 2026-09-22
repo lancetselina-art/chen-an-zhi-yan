@@ -82,6 +82,10 @@ flowchart LR
 
 ├── .streamlit/config.toml  # 主题
 
+├── backend/                 # FastAPI + Pydantic API 层
+
+├── frontend/                # Vue 3 + Vite 独立前端
+
 ├── core/
 
 │   ├── config.py           # 限值/分级/18类隐患目录/知识库映射（单一事实来源）
@@ -103,6 +107,8 @@ flowchart LR
 │   └── reporting.py        # JSON → Markdown 报告
 
 ├── knowledge/              # 规范知识库（11 份 md，随仓库分发）
+
+├── docs/技术架构图.svg       # 可打印架构图
 
 ├── data/
 
@@ -143,7 +149,7 @@ python -m streamlit run app.py
 
 * 视觉与数据链路默认均使用 `glm-5.3-flash`（原生多模态、1M 上下文、速度快），可在侧边栏切换 glm-5.3-flashx / glm-5.3 / GLM-4V 等；接口为 OpenAI 兼容协议，替换 Base URL 可接入其他兼容服务。
 
-* 自检：`python tests/smoke_test.py`（核心逻辑）、`python tests/apptest_smoke.py`（界面全链路）。
+* 验证：`python tests/smoke_test.py`（核心逻辑）、`python tests/apptest_smoke.py`（Streamlit 链路）、`pytest tests/backend tests/integration`（API 契约）。
 
 ## 五、5 分钟路演动线（建议）
 
@@ -181,3 +187,61 @@ python -m streamlit run app.py
 * 数据：`data_quality` + `metric_reports[]{trend,physical_mechanism,actions}` + `coupled_synthesis` + `process_window{concrete_pouring,outdoor_work}` + `warnings[]` + `forecast` + `report_markdown`
 
 字段定义与 few-shot 样例见 `core/prompts.py`。
+
+## 八、前后端分离运行（可选）
+
+本项目保留 `app.py` 作为最终展示入口；FastAPI 与 Vue 是可独立运行的开发与集成入口。三者共享 `core/`，因此不会形成两套阈值、Prompt 或报告逻辑。
+
+### 运行 Streamlit（推荐演示路径）
+
+```powershell
+pip install -r requirements.txt
+python -m streamlit run app.py
+```
+
+无 `ZHIPUAI_API_KEY` 时开启页面内的“演示模式”即可使用内置图片和传感器样例。此路径不依赖 FastAPI，也不需要启动 Node 前端。
+
+### 运行 FastAPI
+
+```powershell
+python -m uvicorn backend.main:app --reload --port 8000
+```
+
+服务地址为 `http://localhost:8000`，接口文档位于 `/docs`。当前接口包括：
+
+| 方法 | 路径 | 用途 |
+| --- | --- | --- |
+| GET | `/api/health` | 健康检查 |
+| GET | `/api/config` | 返回非敏感运行配置 |
+| POST | `/api/vision/analyze` | 图片视觉巡检（multipart） |
+| POST | `/api/sensors/features` | 传感器特征计算（CSV 或 JSON 行） |
+| POST | `/api/sensors/analyze` | 传感器 AI/演示研判 |
+| GET | `/api/knowledge/search?q=` | 规范知识库检索 |
+| GET | `/api/knowledge/{file}` | 获取已知规范文件 |
+| POST | `/api/reports/vision` | 生成视觉 Markdown 报告 |
+| POST | `/api/reports/sensor` | 生成传感器 Markdown 报告 |
+
+JSON 接口统一返回 `ok`、`data`、`error` 和 `request_id` 字段。详细的请求示例见 [`backend/README.md`](backend/README.md)。
+
+知识库页面的检索接口固定读取项目根目录 `/knowledge` 下的本地 Markdown 文件；Streamlit 的 GitHub 同步机制仅用于 Streamlit 运行时更新本地副本，不改变 Vue/FastAPI 页面检索的数据源。
+
+### 运行 Vue 前端
+
+```powershell
+cd frontend
+npm.cmd install
+copy .env.example .env.local
+npm.cmd run dev
+```
+
+`.env.local` 中的 `VITE_API_BASE_URL` 默认指向 `http://localhost:8000`。Vue 前端独立运行，不嵌入 Streamlit；生产构建使用 `npm.cmd run build`。页面包含总览、视觉巡检、传感器、知识库和台账五个视图，界面采用浅色背景、细分隔线和低饱和蓝色强调的简约风格。
+
+### 迁移边界
+
+- `core/` 是领域层，继续负责阈值、特征工程、知识库、LLM、叠图和报告。
+- `backend/` 只做 HTTP 校验、错误映射和服务编排。
+- `frontend/` 只负责交互与展示，通过 API 调用后端。
+- `app.py` 继续直接使用本地 `core/`，保留无 Key 演示、会话台账和报告下载。
+- 本次改造不引入数据库、鉴权或任务队列；台账仍为当前进程内存状态。
+
+接口细节见 [`backend/README.md`](backend/README.md)，前端启动和视图说明见 [`frontend/README.md`](frontend/README.md)，架构图见 [`docs/技术架构图.svg`](docs/技术架构图.svg)。
