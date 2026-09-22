@@ -160,7 +160,7 @@ with st.sidebar:
         vision_model = st.selectbox("视觉模型", C.VISION_MODELS, index=0)
         text_model = st.selectbox("文本/数据模型", C.TEXT_MODELS, index=0)
         temperature = st.slider("温度（越低越稳定）", 0.0, 1.0, 0.1, 0.05)
-        timeout = st.number_input("超时（秒）", 10, 120, 45, 5)
+        timeout = st.number_input("超时（秒）", 10, 180, 90, 10)
         demo_mode = st.toggle("▶️ 演示模式（无需 API Key）", value=not api_key)
     else:
         # 访客：固定默认模型，Key 只从服务端 Secrets 取，不展示任何开发配置
@@ -168,7 +168,7 @@ with st.sidebar:
         api_key = _server_api_key()
         vision_model = C.VISION_MODELS[0]
         text_model = C.TEXT_MODELS[0]
-        temperature, timeout = 0.1, 45
+        temperature, timeout = 0.1, 90
         demo_mode = not api_key
 
     st.divider()

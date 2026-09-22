@@ -33,7 +33,7 @@ class AppConfig:
     vision_model: str = "glm-5.3-flash"
     text_model: str = "glm-5.3-flash"
     temperature: float = 0.1
-    timeout: int = 45
+    timeout: int = 90
     demo_mode: bool = False
 
 
