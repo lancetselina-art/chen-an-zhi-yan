@@ -124,18 +124,40 @@ def render_gauge(score: int, level: str):
 
 
 # ============================ 侧边栏 ============================
+# 访客模式（默认）：只显示检查上下文，隐藏 API Key/模型/GitHub 同步等开发配置；
+# 管理员在网址后加 ?admin=1（如 https://chen-an-zhi-yan.streamlit.app/?admin=1）可见全部配置。
+admin_mode = st.query_params.get("admin") == "1"
+
+
+def _server_api_key() -> str:
+    """云端从 Streamlit Secrets 读取（访客不可见），本地回退环境变量。"""
+    try:
+        return st.secrets.get("ZHIPUAI_API_KEY", "") or os.getenv("ZHIPUAI_API_KEY", "")
+    except Exception:
+        return os.getenv("ZHIPUAI_API_KEY", "")
+
+
 with st.sidebar:
     st.markdown("### 🏗️ 尘安智眼 v4")
     st.caption("多模态视觉 × 时序研判 × 规范 RAG")
 
-    st.markdown("#### 🔑 模型服务")
-    base_url = st.text_input("Base URL", value=C.DEFAULT_BASE_URL)
-    api_key = st.text_input("API Key", type="password", value=os.getenv("ZHIPUAI_API_KEY", ""))
-    vision_model = st.selectbox("视觉模型", C.VISION_MODELS, index=0)
-    text_model = st.selectbox("文本/数据模型", C.TEXT_MODELS, index=0)
-    temperature = st.slider("温度（越低越稳定）", 0.0, 1.0, 0.1, 0.05)
-    timeout = st.number_input("超时（秒）", 10, 120, 45, 5)
-    demo_mode = st.toggle("▶️ 演示模式（无需 API Key）", value=not api_key)
+    if admin_mode:
+        st.markdown("#### 🔑 模型服务（管理员）")
+        base_url = st.text_input("Base URL", value=C.DEFAULT_BASE_URL)
+        api_key = st.text_input("API Key", type="password", value=os.getenv("ZHIPUAI_API_KEY", ""))
+        vision_model = st.selectbox("视觉模型", C.VISION_MODELS, index=0)
+        text_model = st.selectbox("文本/数据模型", C.TEXT_MODELS, index=0)
+        temperature = st.slider("温度（越低越稳定）", 0.0, 1.0, 0.1, 0.05)
+        timeout = st.number_input("超时（秒）", 10, 120, 45, 5)
+        demo_mode = st.toggle("▶️ 演示模式（无需 API Key）", value=not api_key)
+    else:
+        # 访客：固定默认模型，Key 只从服务端 Secrets 取，不展示任何开发配置
+        base_url = C.DEFAULT_BASE_URL
+        api_key = _server_api_key()
+        vision_model = C.VISION_MODELS[0]
+        text_model = C.TEXT_MODELS[0]
+        temperature, timeout = 0.1, 45
+        demo_mode = not api_key
 
     st.divider()
     st.markdown("#### 📋 检查上下文")
@@ -145,19 +167,20 @@ with st.sidebar:
 
     st.divider()
     st.markdown("#### 📚 知识库")
-    kb_src = st.radio("知识来源", ["本地目录", "GitHub 实时同步"], label_visibility="collapsed")
-    if kb_src == "GitHub 实时同步":
-        gh_base = st.text_input("GitHub raw 目录地址", value=C.GITHUB_KB_HINT)
-        if st.button("🔄 从 GitHub 同步", **UW):
-            with st.spinner("同步规范知识库…"):
-                gh_kb, failed = KB.fetch_github_kb(gh_base, timeout=8)
-            if gh_kb:
-                st.session_state["kb"] = gh_kb
-                st.session_state["kb_source"] = f"GitHub：{gh_base}"
-                st.success(f"已同步 {len(gh_kb)} 份规范文件")
-                st.rerun()
-            else:
-                st.error(f"同步失败（{', '.join(failed[:3])}…），已保留本地知识库")
+    if admin_mode:
+        kb_src = st.radio("知识来源", ["本地目录", "GitHub 实时同步"], label_visibility="collapsed")
+        if kb_src == "GitHub 实时同步":
+            gh_base = st.text_input("GitHub raw 目录地址", value=C.GITHUB_KB_HINT)
+            if st.button("🔄 从 GitHub 同步", **UW):
+                with st.spinner("同步规范知识库…"):
+                    gh_kb, failed = KB.fetch_github_kb(gh_base, timeout=8)
+                if gh_kb:
+                    st.session_state["kb"] = gh_kb
+                    st.session_state["kb_source"] = f"GitHub：{gh_base}"
+                    st.success(f"已同步 {len(gh_kb)} 份规范文件")
+                    st.rerun()
+                else:
+                    st.error(f"同步失败（{', '.join(failed[:3])}…），已保留本地知识库")
     st.caption(f"当前来源：{st.session_state['kb_source']}")
     st.caption(f"📚 {len(KB_DICT)} 份文件 · 精要 {len(RULE_DIGEST)} 字符（已压缩注入）")
 
