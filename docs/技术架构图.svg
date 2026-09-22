@@ -43,9 +43,9 @@
   <rect class="lane" x="40" y="372" width="1120" height="150"/>
   <text class="laneTitle" x="62" y="398">③ 认知层（黄金 Prompt + 多模态大模型 + 知识库 RAG）</text>
   <rect class="boxRed" x="90" y="412" width="300" height="46"/><text class="bt" x="240" y="440">视觉黄金 Prompt（Role-JSON 契约）</text>
-  <rect class="boxDark" x="90" y="466" width="300" height="44"/><text class="bw" x="240" y="485">GLM-4V 视觉模型</text><text class="bws" x="240" y="502">18 类隐患 · 危险值 · bbox · 事故链 · 整改</text>
+  <rect class="boxDark" x="90" y="466" width="300" height="44"/><text class="bw" x="240" y="485">GLM-5.3-Flash 多模态（视觉）</text><text class="bws" x="240" y="502">18 类隐患 · 危险值 · bbox · 事故链 · 整改</text>
   <rect class="boxRed" x="430" y="412" width="300" height="46"/><text class="bt" x="580" y="440">数据黄金 Prompt（机理-工艺-趋势）</text>
-  <rect class="boxDark" x="430" y="466" width="300" height="44"/><text class="bw" x="580" y="485">GLM 文本模型</text><text class="bws" x="580" y="502">耦合研判 · 工艺窗口 · 趋势外推 · 报告</text>
+  <rect class="boxDark" x="430" y="466" width="300" height="44"/><text class="bw" x="580" y="485">GLM-5.3-Flash 多模态（数据）</text><text class="bws" x="580" y="502">耦合研判 · 工艺窗口 · 趋势外推 · 报告</text>
   <rect class="box" x="780" y="412" width="320" height="98"/><text class="bt" x="940" y="438">📚 规范知识库（11 份）</text><text class="bs" x="940" y="462">启动压缩为规则精要 Digest 注入</text><text class="bs" x="940" y="482">命中隐患后按分类码召回全文</text><text class="bs" x="940" y="502">本地目录 / GitHub raw 双源热同步</text>
 
   <!-- 应用层 -->

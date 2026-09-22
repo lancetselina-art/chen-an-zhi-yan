@@ -29,8 +29,8 @@ class LLMError(RuntimeError):
 class AppConfig:
     api_key: str = ""
     base_url: str = "https://open.bigmodel.cn/api/paas/v4"
-    vision_model: str = "glm-4v-plus"
-    text_model: str = "glm-4.7"
+    vision_model: str = "glm-5.3-flash"
+    text_model: str = "glm-5.3-flash"
     temperature: float = 0.1
     timeout: int = 45
     demo_mode: bool = False

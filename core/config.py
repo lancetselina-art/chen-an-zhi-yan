@@ -152,17 +152,17 @@ COLUMN_ALIASES = {
     "PM10":  ["pm10", "PM10", "背景pm10", "背景PM10"],
 }
 
-# GitHub 知识库默认地址模板（参赛队改为自己的仓库 raw 地址即可）
-GITHUB_KB_HINT = "https://raw.githubusercontent.com/<用户名>/<仓库名>/main/knowledge"
+# GitHub 知识库 raw 目录地址（已配置为本队仓库；仓库公开时可一键同步）
+GITHUB_KB_HINT = "https://raw.githubusercontent.com/lancetselina-art/chen-an-zhi-yan/main/knowledge"
 KB_FILES = [
     "01-扬尘-红线.md", "02-扬尘-黄线.md", "03-噪声-红线.md", "04-噪声-黄线.md",
     "05-高温.md", "06-安全帽口罩-规则.md", "07-安全管理.md", "08-尾气排放.md",
     "09-渣土运输.md", "10-污水泥浆.md", "11-光污染.md",
 ]
 
-# 模型候选（OpenAI 兼容协议；智谱 GLM 视觉模型走 vision，文本/数据走 text）
-VISION_MODELS = ["glm-4v-plus", "glm-4v-flash", "glm-4.5v"]
-TEXT_MODELS = ["glm-4.7", "glm-4.5", "glm-4-plus", "glm-4-flash"]
+# 模型候选（OpenAI 兼容协议；默认 glm-5.3-flash，原生多模态，视觉/数据两条链路通用）
+VISION_MODELS = ["glm-5.3-flash", "glm-5.3-flashx", "glm-4v-plus", "glm-4.5v", "glm-4v-flash"]
+TEXT_MODELS = ["glm-5.3-flash", "glm-5.3-flashx", "glm-5.3", "glm-4.7", "glm-4.5", "glm-4-flash"]
 DEFAULT_BASE_URL = "https://open.bigmodel.cn/api/paas/v4"
 
 # 上传约束

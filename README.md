@@ -39,8 +39,8 @@ flowchart LR
         C1[视觉黄金Prompt<br/>Role-Task-JSON契约]
         C2[数据黄金Prompt<br/>机理解读·工艺窗口]
         C3[(知识库<br/>规则精要Digest)]
-        C4[GLM-4V 视觉模型]
-        C5[GLM 文本模型]
+        C4[GLM-5.3-Flash 多模态模型<br/>视觉理解]
+        C5[GLM-5.3-Flash 多模态模型<br/>数据研判]
     end
     subgraph 应用层 Streamlit
         D1[检测框叠加 PIL]
@@ -141,7 +141,7 @@ python -m streamlit run app.py
 
 
 
-* 视觉模型默认 `glm-4v-plus`，数据模型默认 `glm-4.7`，均可在侧边栏切换；接口为 OpenAI 兼容协议，替换 Base URL 可接入其他兼容服务。
+* 视觉与数据链路默认均使用 `glm-5.3-flash`（原生多模态、1M 上下文、速度快），可在侧边栏切换 glm-5.3-flashx / glm-5.3 / GLM-4V 等；接口为 OpenAI 兼容协议，替换 Base URL 可接入其他兼容服务。
 
 * 自检：`python tests/smoke_test.py`（核心逻辑）、`python tests/apptest_smoke.py`（界面全链路）。
 

@@ -188,7 +188,7 @@ with tab_overview:
 
     st.markdown("### ⚙️ 系统工作流")
     flow = ["① 多源采集\n照片 / 探头时序", "② 结构化 Prompt\n专家角色+JSON契约",
-            "③ 多模态大模型\n视觉 GLM-4V / 文本 GLM", "④ 知识库 RAG\n隐患→法条自动映射",
+            "③ 多模态大模型\nGLM-5.3-Flash（视觉+文本）", "④ 知识库 RAG\n隐患→法条自动映射",
             "⑤ 分级处置\n检测框·预警·工单闭环"]
     cols = st.columns([2.2, 0.4, 2.2, 0.4, 2.2, 0.4, 2.2, 0.4, 2.2])
     for i, step in enumerate(flow):
