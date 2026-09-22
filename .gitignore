@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# 日志与缓存
+*.log
+.kb_cache/
+
+# 系统
+.DS_Store
+Thumbs.db
