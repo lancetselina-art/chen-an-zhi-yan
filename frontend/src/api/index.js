@@ -1,15 +1,26 @@
-import { get, postForm, postJson } from './client'
+import { get, getApiBaseUrl, postForm, postJson, request } from './client'
 
 export const getHealth = () => get('/api/health')
 export const getConfig = () => get('/api/config')
+export const getModelSettings = () => get('/api/settings/model')
+export const saveModelSettings = (settings) => request('/api/settings/model', {
+  method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings),
+})
+export const testModelSettings = (settings) => request('/api/settings/model/test', {
+  method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings),
+})
 export const analyzeVision = ({ file, stage, workType, isNight, demoMode }) => {
   const form = new FormData()
-  form.append('image', file)
+  if (file) form.append('image', file)
   form.append('stage', stage || '')
   form.append('work_type', workType || '')
   form.append('is_night', String(Boolean(isNight)))
   form.append('demo_mode', String(Boolean(demoMode)))
   return postForm('/api/vision/analyze', form)
+}
+export const resolveAssetUrl = (path) => {
+  if (!path) return ''
+  return /^https?:\/\//.test(path) ? path : `${getApiBaseUrl()}${path}`
 }
 export const computeSensorFeatures = (rows, context = {}) => postJson('/api/sensors/features', { rows, ...context })
 export const computeSensorFeaturesFile = (file, context = {}) => {

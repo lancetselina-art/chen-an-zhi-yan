@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from backend.api import health, vision, sensors, knowledge, reports
+from backend.api import health, vision, sensors, knowledge, reports, model_settings
 from backend.services.runtime import settings
 app=FastAPI(title='chen-an-zhi-yan')
 app.add_middleware(
@@ -15,7 +15,7 @@ app.add_middleware(
     allow_methods=['*'],
     allow_headers=['*'],
 )
-app.include_router(health.router); app.include_router(vision.router); app.include_router(sensors.router); app.include_router(knowledge.router); app.include_router(reports.router)
+app.include_router(health.router); app.include_router(vision.router); app.include_router(sensors.router); app.include_router(knowledge.router); app.include_router(reports.router); app.include_router(model_settings.router)
 @app.get('/api/config')
 def config(): return settings()
 

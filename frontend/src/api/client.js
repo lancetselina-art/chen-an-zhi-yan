@@ -1,4 +1,4 @@
-const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '')
+const baseUrl = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
 
 function unwrap(payload) {
   if (payload && typeof payload === 'object' && 'ok' in payload) {
@@ -8,7 +8,7 @@ function unwrap(payload) {
   return payload
 }
 
-async function request(path, options = {}) {
+export async function request(path, options = {}) {
   const response = await fetch(`${baseUrl}${path}`, options)
   let payload = null
   try { payload = await response.json() } catch { /* empty response */ }

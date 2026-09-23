@@ -53,3 +53,25 @@ def test_unknown_knowledge_file_is_safe_error():
     body = response.json()
     assert body['ok'] is False
     assert 'Traceback' not in str(body)
+
+
+def test_demo_vision_uses_default_assets_without_upload():
+    response = client.post('/api/vision/analyze', data={'demo_mode': 'true'})
+    assert response.status_code == 200
+    data = response.json()['data']
+    assert data['input_image_url'] == '/api/vision/demo/input'
+    assert data['overlay_image_url'] == '/api/vision/demo/overlay'
+    assert len(data['findings']) == 6
+    assert all(item['visual_evidence'] for item in data['findings'])
+    assert all(item['accident_chain'] for item in data['findings'])
+    assert all(item['rectification']['action'] for item in data['findings'])
+    assert client.get(data['input_image_url']).status_code == 200
+    assert client.get(data['overlay_image_url']).status_code == 200
+
+
+def test_non_demo_vision_still_requires_upload():
+    response = client.post('/api/vision/analyze', data={'demo_mode': 'false'})
+    assert response.status_code == 400
+    body = response.json()
+    assert body['ok'] is False
+    assert '上传现场图片' in body['error']['message']

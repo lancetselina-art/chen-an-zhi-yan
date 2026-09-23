@@ -24,13 +24,13 @@ npm.cmd run build
 
 ## 页面与 API
 
-当前客户端包含五个视图：总览、视觉巡检、传感器、知识库和台账。知识库页面通过 `/api/knowledge/search` 和 `/api/knowledge/{file}` 读取后端连接的项目根目录 `/knowledge`。请求封装集中在 `src/api/`，页面只处理交互状态和展示，不复制 `core/` 算法。
+当前客户端包含五个视图：总览、视觉巡检、传感器、知识库和台账。请求封装集中在 `src/api/`，页面只处理交互状态和展示，不复制 `core/` 算法。
 
 | 前端能力 | 后端接口 |
 | --- | --- |
 | 服务状态和运行配置 | `GET /api/health`、`GET /api/config` |
 | 图片巡检 | `POST /api/vision/analyze` |
-| 特征计算与研判 | `POST /api/sensors/features`（支持 CSV 上传）、`POST /api/sensors/analyze` |
+| 特征计算与研判 | `POST /api/sensors/features`、`POST /api/sensors/analyze` |
 | 规范搜索 | `GET /api/knowledge/search`、`GET /api/knowledge/{file}` |
 | 报告生成 | `POST /api/reports/vision`、`POST /api/reports/sensor` |
 

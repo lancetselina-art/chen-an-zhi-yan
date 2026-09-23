@@ -82,6 +82,15 @@ def _request(cfg: AppConfig, model: str, messages: list, max_tokens: int,
     raise LLMError(f"调用失败：{last_err}")
 
 
+def test_connection(cfg: AppConfig) -> str:
+    if not cfg.api_key:
+        raise LLMError("请先配置 API Key")
+    _request(cfg, cfg.text_model, [
+        {"role": "user", "content": "Reply with OK."},
+    ], max_tokens=8)
+    return cfg.text_model
+
+
 def _extract_json_object(text: str) -> str | None:
     """从模型回复中抠出 JSON 对象本体：去代码围栏 → 取最外层花括号。"""
     fence = re.search(r"```(?:json|JSON)?\s*(.*?)```", text, re.S)

@@ -207,7 +207,7 @@ python -m streamlit run app.py
 python -m uvicorn backend.main:app --reload --port 8000
 ```
 
-服务地址为 `http://localhost:8000`，接口文档位于 `/docs`。当前接口包括：
+服务地址为 `http://127.0.0.1:8000`，接口文档位于 `/docs`。当前接口包括：
 
 | 方法 | 路径 | 用途 |
 | --- | --- | --- |
@@ -234,7 +234,7 @@ copy .env.example .env.local
 npm.cmd run dev
 ```
 
-`.env.local` 中的 `VITE_API_BASE_URL` 默认指向 `http://localhost:8000`。Vue 前端独立运行，不嵌入 Streamlit；生产构建使用 `npm.cmd run build`。页面包含总览、视觉巡检、传感器、知识库和台账五个视图，界面采用浅色背景、细分隔线和低饱和蓝色强调的简约风格。
+`.env.local` 中的 `VITE_API_BASE_URL` 默认指向 `http://127.0.0.1:8000`。Vue 前端独立运行，不嵌入 Streamlit；生产构建使用 `npm.cmd run build`。页面包含总览、视觉巡检、传感器、知识库和台账五个视图，界面采用浅色背景、细分隔线和低饱和蓝色强调的简约风格。
 
 ### 迁移边界
 

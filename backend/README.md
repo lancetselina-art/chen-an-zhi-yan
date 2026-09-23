@@ -11,10 +11,10 @@ pip install -r requirements.txt
 python -m uvicorn backend.main:app --reload --port 8000
 ```
 
-启动后可访问 `http://localhost:8000/docs` 查看 OpenAPI 文档，健康检查为：
+启动后可访问 `http://127.0.0.1:8000/docs` 查看 OpenAPI 文档，健康检查为：
 
 ```powershell
-Invoke-RestMethod http://localhost:8000/api/health
+Invoke-RestMethod http://127.0.0.1:8000/api/health
 ```
 
 ## 接口
